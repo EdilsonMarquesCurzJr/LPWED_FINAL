@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Clientes</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>Lista de Clientes</h1> <!-- Corrigido: "Cliente" → "Clientes" -->
+
+    <a href="/novo">
+        <button>Novo Cliente</button>
+    </a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Data/Nasc</th>
+                <th>Endereço</th> <!-- Corrigido: "Endereco" → "Endereço" -->
+                <th>Telefone</th>
+                <th>Email</th>
+                <th class="centralizado">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% clientes.forEach(cliente => { %>
+                <tr>
+                    <td><%= cliente.id %></td> <!-- Corrigido: <% cliente.id %> → <%= cliente.id %> -->
+                    <td><%= cliente.nome %></td>
+                    <td><%= cliente.nascimento %></td>
+                    <td><%= cliente.endereco %></td> <!-- Corrigido: cliente.cpf → cliente.endereco -->
+                    <td><%= cliente.telefone %></td>
+                    <td><%= cliente.email %></td>
+                    <td class="centralizado">
+                        <form action="/editar/<%= cliente.id %>" method="GET" style="display: inline;">
+                            <button type="submit" class="editar">Editar</button>
+                        </form>
+                        <button type="button" class="excluir" onclick="confirmarExclusao('<%= cliente.id %>')">Excluir</button>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <script>
+        function confirmarExclusao(id) {
+            if (confirm("Tem certeza que deseja excluir este cliente?")) {
+                window.location.href = "/excluir/" + id;
+            }
+        }
+    </script>
+</body>
+</html>
