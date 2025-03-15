@@ -157,6 +157,11 @@ input[type="text"], input[type="email"], input[type="date"] {
     cursor: pointer;
 }
 
+#confirmarOuCancelar{
+    display: flex;
+    gap: 3px;
+}
+
 #confirmar:hover {
     background-color: #DC143C; /* Vermelho Escuro */
 }

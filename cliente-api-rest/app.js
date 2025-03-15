@@ -30,6 +30,18 @@ app.get('/', async(req, res) => {
     }
 });
 
+app.post('/excluir/:id', async(req, res) =>{
+    const { id } = req.params;
+    try{
+        await axios.delete(`${apiUrl}/${id}`);
+        res.redirect('/');
+    }catch(error){
+        console.error(error);
+        res.status(500).send('erro ao excluir cliente');
+
+    }
+});
+
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
