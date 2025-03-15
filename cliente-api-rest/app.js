@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const app = express();
+app.use(express.json());
 
 
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -18,6 +19,19 @@ const apiUrl = 'http://localhost:8080/api/clientes';
 
 app.get('/', (req, res) => {
     res.render('index'); // Renderiza index.ejs
+});
+
+app.get('/cadastro', (req, res) => {
+    res.render('cadastro')
+});
+app.post('/cadastrar', async(req, res) =>{
+    try{
+        const response = await axios.post(apiUrl, req.body);
+        console.log(req.body);
+        res.status(201).json(response.data);
+    }catch(error){
+        console.error(error);
+    }
 });
 
 app.get('/listarClientes', async(req, res) => {

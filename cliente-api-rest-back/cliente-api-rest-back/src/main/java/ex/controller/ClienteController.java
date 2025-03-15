@@ -28,7 +28,10 @@ public class ClienteController {
 	
 	@PostMapping
 	public ResponseEntity<ClienteFormRequest> salvar(@RequestBody ClienteFormRequest request){
+
 		Cliente cliente = request.toModel();
+	    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\\nRecebendo cliente com CPF: " + cliente.toString());
+
 		
 		repository.save(cliente);
 		

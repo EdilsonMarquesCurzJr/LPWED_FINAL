@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+            input{
+        width: 200px;
+        padding: 5px;
+        margin: 0px 0px 10px 0px;
+        font-size: 16px;
+    }
+    </style>
+
+</head>
+<body>
+    <h1>Cadastrar Novo Cliente</h1>
+
+    <form action="" id="form">
+        <label for="nome">Nome:</label><br>
+        <input type="text" name="nome" id="nome"><br>
+        <label for="dataNascimento">Data de Nascimento:</label><br>
+        <input type="date" name="dataNascimento" id="dataNascimento"><br>
+        <label for="cpf">CPF:</label><br>
+        <input type="number" name="cpf" id="cpf"><br>
+        <label for="Endereço">Endereço:</label><br>
+        <input type="text" name="endereco" id="endereco"><br>
+        <label for="telefone">Telefone:</label><br>
+        <input type="tel" name="telefone" id="telefone"><br>
+        <label for="email">Email:</label><br>
+        <input type="email" name="email" id="email"><br>
+        <input type="submit" id="confirmar" value="Enviar">
+
+    </form>
+    <script>
+        document.getElementById('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+    
+            const cliente = {
+                nome: document.getElementById('nome').value,
+                nascimento: document.getElementById('dataNascimento').value,
+                cpf: document.getElementById('cpf').value,
+                endereco: document.getElementById('endereco').value,
+                telefone: document.getElementById('telefone').value,
+                email: document.getElementById('email').value,
+                datacadastro: new Date().toISOString,
+            };
+
+        
+            console.log(cliente);
+
+                
+            try{
+                const response = await fetch('http://localhost:3000/cadastrar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(cliente)
+                });
+    
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Cliente cadastrado com sucesso!');
+                } else {
+                    alert('Erro ao cadastrar cliente: ' + result.error);
+                }
+            }catch(error){
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+
+</html>
