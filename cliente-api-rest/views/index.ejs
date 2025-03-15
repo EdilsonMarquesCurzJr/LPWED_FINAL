@@ -3,87 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Clientes</title>
+    <title>Autenticar</title> <!-- Corrigido: "Atenticar" → "Autenticar" -->
     <link rel="stylesheet" href="/css/style.css">
 
 </head>
+<style>
+    form{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    input{
+        width: 200px;
+        padding: 5px;
+        margin: 0px 0px 10px 0px;
+        font-size: 16px;
+    }
+</style>
 <body>
-    <h1>Lista de Clientes</h1> <!-- Corrigido: "Cliente" → "Clientes" -->
-
-    <a href="/novo">
-        <button>Novo Cliente</button>
-    </a>
-
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Data/Nasc</th>
-                <th>Endereço</th> <!-- Corrigido: "Endereco" → "Endereço" -->
-                <th>Telefone</th>
-                <th>Email</th>
-                <th class="centralizado">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% clientes.forEach(cliente => { %>
-                <tr>
-                    <td><%= cliente.id %></td> <!-- Corrigido: <% cliente.id %> → <%= cliente.id %> -->
-                    <td><%= cliente.nome %></td>
-                    <td><%= cliente.nascimento %></td>
-                    <td><%= cliente.endereco %></td> <!-- Corrigido: cliente.cpf → cliente.endereco -->
-                    <td><%= cliente.telefone %></td>
-                    <td><%= cliente.email %></td>
-                    <td class="centralizado">
-                        <form action="/editar/<%= cliente.id %>" method="GET" style="display: inline;">
-                            <button type="submit" class="editar">Editar</button>
-                        </form>
-                        <button type="button" class="excluir" onclick="showModalExcluir('<%= cliente.id %>')">Excluir</button>
-                    </td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
-
-    
-    <div class="modal">
-        <div class="modal-content">
-            
-            <p>Confirmar a exclusao</p>
-
-            <div id="confirmarOuCancelar">
-            <button id="confirmar" class="excluir">Sim</button>
-            <button id="cancelar" onclick="hindenModalEcluir()">Não</button>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-
-        function showModalExcluir(clienteId){
-            let modal = document.getElementsByClassName('modal')[0];
-            modal.style.display = 'block'
-            console.log(clienteId)
-
-            let confirmar = document.getElementById('confirmar');
-            confirmar.onclick = function(){
-                let form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '/excluir/' + clienteId;
-                document.body.appendChild(form);
-                form.submit();
-                hindenModalEcluir();
-
-            }
-        }
-        function hindenModalEcluir(){
-          
-            let modal = document.getElementsByClassName('modal')[0];
-            modal.style.display = 'none'
+    <form id="loginForm">
+        <label for="usuario">Usuário</label>
+        <input type="text" id="usuario" name="usuario" placeholder="Usuário">
         
-        }
-    </script>
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Senha">
+        
+        <input type="submit" value="Entrar">
+    </form>
 </body>
+
+<script>
+    const form = document.getElementById("loginForm");
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault(); // Evita o envio padrão do formulário
+
+        const usuario = document.getElementById("usuario").value.trim();
+        const senha = document.getElementById("senha").value.trim();
+
+        if (usuario === "") {
+            alert("Usuário em branco");
+            return;
+        }
+        if (senha === "") {
+            alert("Senha em branco");
+            return;
+        }
+
+        if (usuario === "admin" && senha === "admin123") {
+            window.location.href = "/listarClientes"; // Redireciona para a página correta
+        } else {
+            alert("Usuário ou senha incorretos");
+        }
+    });
+</script>
+
 </html>

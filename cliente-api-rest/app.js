@@ -16,12 +16,15 @@ const apiUrl = 'http://localhost:8080/api/clientes';
 //     res.sand('Criando minha primera rota');
 // });
 
+app.get('/', (req, res) => {
+    res.render('index'); // Renderiza index.ejs
+});
 
-app.get('/', async(req, res) => {
+app.get('/listarClientes', async(req, res) => {
     try{
         const response = await axios.get(apiUrl);
         const clientes = response.data;
-        res.render('index', { clientes });
+        res.render('ListarClientes', { clientes });
         // console.log({clientes})
 
     } catch(error){
