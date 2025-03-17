@@ -14,7 +14,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import ex.model.Cliente;
+import ex.model.repository.ClienteRepository;
 import ex.model.Cliente;
 import ex.model.repository.ClienteRepository;
 
@@ -41,12 +53,15 @@ public class ClienteController {
 	}
 	
 	@GetMapping
-	public List<ClienteFormRequest> getLista(){
-		return repository.findAll()
-				.stream()
-				.map(ClienteFormRequest::fromModel)
-				.collect(Collectors.toList());
-		
+	public ResponseEntity<Page<ClienteFormRequest>> getLista(
+	    @RequestParam(defaultValue = "0") int page,
+	    @RequestParam(defaultValue = "4") int size) {
+	    
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<ClienteFormRequest> clientesPage = repository.findAll(pageable)
+	        .map(ClienteFormRequest::fromModel);
+	        
+	    return ResponseEntity.ok(clientesPage);
 	}
 	
 	@DeleteMapping("/{id}")

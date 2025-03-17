@@ -173,3 +173,28 @@ input[type="text"], input[type="email"], input[type="date"] {
 #searchInput {
     width: 710px;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
+.pagination a.active {
+    background-color: #0056b3;
+    font-weight: bold;
+}

@@ -35,15 +35,27 @@ app.post('/cadastrar', async(req, res) =>{
 });
 
 app.get('/listarClientes', async(req, res) => {
-    try{
-        const response = await axios.get(apiUrl);
-        const clientes = response.data;
-        res.render('ListarClientes', { clientes });
-        // console.log({clientes})
+    try {
+        const page = parseInt(req.query.page || 0);
+        const size = 4;
+        const response = await axios.get(apiUrl, {
+            params: { page, size }
+        });
+        
+        // Acessa os dados corretamente da resposta paginada
+        const clientes = response.data.content; // Alterado aqui
+        const totalPages = response.data.totalPages;
+        const currentPage = response.data.number;
 
-    } catch(error){
+        res.render('ListarClientes', { 
+            clientes: clientes || [], // Garante array vazio se undefined
+            totalPages,
+            currentPage
+        });
+
+    } catch(error) {
         console.error(error);
-        res.status(500).send('Erro ao buscar cliente')
+        res.status(500).send('Erro ao buscar clientes');
     }
 });
 
@@ -51,7 +63,7 @@ app.post('/excluir/:id', async(req, res) =>{
     const { id } = req.params;
     try{
         await axios.delete(`${apiUrl}/${id}`);
-        res.redirect('/');
+        res.redirect("/listarClientes?mensagem=Usuário excluído com sucesso");
     }catch(error){
         console.error(error);
         res.status(500).send('erro ao excluir cliente');
