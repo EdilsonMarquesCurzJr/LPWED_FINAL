@@ -38,19 +38,25 @@ app.get('/listarClientes', async(req, res) => {
     try {
         const page = parseInt(req.query.page || 0);
         const size = 4;
+        const search = req.query.search || '';
+        
         const response = await axios.get(apiUrl, {
-            params: { page, size }
+            params: { 
+                page, 
+                size,
+                nome: search
+            }
         });
         
-        // Acessa os dados corretamente da resposta paginada
-        const clientes = response.data.content; // Alterado aqui
+        const clientes = response.data.content;
         const totalPages = response.data.totalPages;
         const currentPage = response.data.number;
 
         res.render('ListarClientes', { 
-            clientes: clientes || [], // Garante array vazio se undefined
+            clientes: clientes || [],
             totalPages,
-            currentPage
+            currentPage,
+            searchTerm: search 
         });
 
     } catch(error) {

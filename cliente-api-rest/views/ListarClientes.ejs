@@ -23,10 +23,15 @@
     <br>
     <div style="display: flex; flex-direction: row; gap: 10px; align-items: center;">
       <p>Pesquisar Cliente:</p>
-      <input type="text" >
-      <a href="/cadastro">
-      <button>Pesquisar</button>
-      </a>
+      <form action="/listarClientes" method="GET" style="display: flex; gap: 10px;">
+        <input 
+          type="text" 
+          name="search" 
+          value="<%= searchTerm || '' %>"
+          placeholder="Digite o nome"
+        >
+        <button type="submit">Pesquisar</button>
+      </form>
     </div>
 
     <table>
@@ -82,12 +87,14 @@
 
     <div class="pagination">
       <% if (currentPage > 0) { %>
-          <a href="/listarClientes?page=<%= currentPage - 1 %>">&laquo; Anterior</a>
+          <a href="/listarClientes?page=<%= currentPage - 1 %>&search=<%= searchTerm %>">
+              &laquo; Anterior
+          </a>
       <% } %>
   
       <% for (let i = 0; i < totalPages; i++) { %>
           <a 
-              href="/listarClientes?page=<%= i %>" 
+              href="/listarClientes?page=<%= i %>&search=<%= searchTerm %>" 
               class="<%= i === currentPage ? 'active' : '' %>"
           >
               <%= i + 1 %>
@@ -95,7 +102,9 @@
       <% } %>
   
       <% if (currentPage < totalPages - 1) { %>
-          <a href="/listarClientes?page=<%= currentPage + 1 %>">Próximo &raquo;</a>
+          <a href="/listarClientes?page=<%= currentPage + 1 %>&search=<%= searchTerm %>">
+              Próximo &raquo;
+          </a>
       <% } %>
   </div>
 
