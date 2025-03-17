@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cadastro</title>
+    <title>Editar</title>
     <link rel="stylesheet" href="/css/style.css" />
     <style>
       input {
@@ -26,28 +26,54 @@
       <input type="hidden" name="_method" value="PUT"> 
 
       <label for="nome">Nome:</label><br />
-      <input type="text" name="nome" id="nome" value="<%= cliente.nome %>" /><br />
+      <input type="text" name="nome" id="nome" value="<%= cliente.nome %>" required/><br />
 
       <label for="dataNascimento">Data de Nascimento:</label><br />
-      <input type="date" name="dataNascimento" id="dataNascimento"
-      value="<%= cliente.nascimento ? new Date(cliente.nascimento).toISOString().split('T')[0] : '' %>"><br />
+      <input type="date" name="dataNascimento" id="dataNascimento" 
+        value="<%= cliente.nascimento ? new Date(cliente.nascimento).toISOString().split('T')[0] : '' %>" required/><br />
 
       <label for="cpf">CPF:</label><br />
-      <input type="number" name="cpf" id="cpf" value="<%= cliente.cpf %>" /><br />
+      <!-- Formatação do CPF -->
+      <input type="text" name="cpf" id="cpf" value="<%= cliente.cpf %>" 
+        maxlength="14" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: 123.456.789-09" required/><br />
 
       <label for="endereco">Endereço:</label><br />
-      <input type="text" name="endereco" id="endereco" value="<%= cliente.endereco %>" /><br />
+      <input type="text" name="endereco" id="endereco" value="<%= cliente.endereco %>" required/><br />
 
       <label for="telefone">Telefone:</label><br />
-      <input type="tel" name="telefone" id="telefone" value="<%= cliente.telefone %>" /><br />
+      <!-- Formatação do Telefone -->
+      <input type="tel" name="telefone" id="telefone" value="<%= cliente.telefone %>" 
+        required maxlength="15" pattern="\d{5}-\d{4}" title="Formato: 94132-XXXX"/><br />
 
       <label for="email">Email:</label><br />
-      <input type="email" name="email" id="email" value="<%= cliente.email %>" /><br />
+      <input type="email" name="email" id="email" value="<%= cliente.email %>" required/><br />
 
       <input type="submit" id="confirmar" value="Salvar" />
     </form>
 
     <script>
+      // Função para formatar o CPF
+      function formatCPF(cpf) {
+        return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+      }
+
+      // Função para formatar o Telefone
+      function formatTelefone(telefone) {
+        return telefone.replace(/^(\d{5})(\d{4})$/, "$1-$2");
+      }
+
+      // Evento para formatar o CPF enquanto o usuário digita
+      document.getElementById("cpf").addEventListener("input", function (e) {
+        e.target.value = formatCPF(e.target.value.replace(/\D/g, ""));
+      });
+
+      // Evento para formatar o Telefone enquanto o usuário digita
+      document
+        .getElementById("telefone")
+        .addEventListener("input", function (e) {
+          e.target.value = formatTelefone(e.target.value.replace(/\D/g, ""));
+        });
+
       document.getElementById("form").addEventListener("submit", async function (e) {
         e.preventDefault();
 

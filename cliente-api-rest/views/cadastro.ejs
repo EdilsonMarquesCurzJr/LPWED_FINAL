@@ -1,84 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css" />
     <style>
-            input{
+      input {
         width: 200px;
         padding: 5px;
         margin: 0px 0px 10px 0px;
         font-size: 16px;
-    }
+      }
     </style>
-
-</head>
-<body>
-
-
-    <div  style="display: flex; flex-direction: row; align-items: center; gap: 8%;">
-        <h1>Cadastrar Novo Cliente</h1>
-        <a href="/listarClientes">
-          <button style="background-color: rgb(177, 0, 0);">Voltar</button>
-        </a>
-      </div>
+  </head>
+  <body>
+    <div
+      style="display: flex; flex-direction: row; align-items: center; gap: 8%"
+    >
+      <h1>Cadastrar Novo Cliente</h1>
+      <a href="/listarClientes">
+        <button style="background-color: rgb(177, 0, 0)">Voltar</button>
+      </a>
+    </div>
 
     <form action="" id="form">
-        <label for="nome">Nome:</label><br>
-        <input type="text" name="nome" id="nome"><br>
-        <label for="dataNascimento">Data de Nascimento:</label><br>
-        <input type="date" name="dataNascimento" id="dataNascimento"><br>
-        <label for="cpf">CPF:</label><br>
-        <input type="number" name="cpf" id="cpf"><br>
-        <label for="Endereço">Endereço:</label><br>
-        <input type="text" name="endereco" id="endereco"><br>
-        <label for="telefone">Telefone:</label><br>
-        <input type="tel" name="telefone" id="telefone"><br>
-        <label for="email">Email:</label><br>
-        <input type="email" name="email" id="email"><br>
-        <input type="submit" id="confirmar" value="Enviar">
-
+      <label for="nome">Nome:</label><br />
+      <input type="text" name="nome" id="nome" required/><br />
+      <label for="dataNascimento">Data de Nascimento:</label><br />
+      <input type="date" name="dataNascimento" id="dataNascimento" required/><br />
+      <label for="cpf">CPF:</label><br />
+      <!-- Regex para CPF no formato XXX.XXX.XXX-XX -->
+      <input
+        type="text"
+        name="cpf"
+        id="cpf"
+        maxlength="14"
+        pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+        title="Formato: 123.456.789-09"
+        required /><br />
+      <label for="endereco">Endereço:</label><br />
+      <input type="text" name="endereco" id="endereco" required/><br />
+      <label for="telefone">Telefone:</label><br />
+      <!-- Regex para Telefone no formato XXXXXX-XXXX -->
+      <input
+      required
+        type="text"
+        name="telefone"
+        id="telefone"
+        pattern="\d{5}-\d{4}"
+        maxlength="11"
+        title="Formato: 94132-XXXX"
+      /><br />
+      <label for="email">Email:</label><br />
+      <input required type="email" name="email" id="email" /><br />
+      <input type="submit" id="confirmar" value="Enviar" />
     </form>
+
     <script>
-        document.getElementById('form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-    
-            const cliente = {
-                nome: document.getElementById('nome').value,
-                nascimento: document.getElementById('dataNascimento').value,
-                cpf: document.getElementById('cpf').value,
-                endereco: document.getElementById('endereco').value,
-                telefone: document.getElementById('telefone').value,
-                email: document.getElementById('email').value,
-                datacadastro: new Date().toISOString,
-            };
+      // Função para formatar o CPF
+      function formatCPF(cpf) {
+        return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+      }
 
-        
-            console.log(cliente);
+      // Função para formatar o Telefone
+      function formatTelefone(telefone) {
+        return telefone.replace(/^(\d{5})(\d{4})$/, "$1-$2");
+      }
 
-                
-            try{
-                const response = await fetch('http://localhost:3000/cadastrar', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(cliente)
-                });
-    
-                const result = await response.json();
-                if (response.ok) {
-                    alert('Cliente cadastrado com sucesso!');
-                } else {
-                    alert('Erro ao cadastrar cliente: ' + result.error);
-                }
-            }catch(error){
-                console.error(error);
+      // Evento para formatar o CPF enquanto o usuário digita
+      document.getElementById("cpf").addEventListener("input", function (e) {
+        e.target.value = formatCPF(e.target.value.replace(/\D/g, ""));
+      });
+
+      // Evento para formatar o Telefone enquanto o usuário digita
+      document
+        .getElementById("telefone")
+        .addEventListener("input", function (e) {
+          e.target.value = formatTelefone(e.target.value.replace(/\D/g, ""));
+        });
+
+      document
+        .getElementById("form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const cliente = {
+            nome: document.getElementById("nome").value,
+            nascimento: document.getElementById("dataNascimento").value,
+            cpf: document.getElementById("cpf").value,
+            endereco: document.getElementById("endereco").value,
+            telefone: document.getElementById("telefone").value,
+            email: document.getElementById("email").value,
+            datacadastro: new Date().toISOString(),
+          };
+
+          console.log(cliente);
+
+          try {
+            const response = await fetch("http://localhost:3000/cadastrar", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(cliente),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+              alert("Cliente cadastrado com sucesso!");
+            } else {
+              alert("Erro ao cadastrar cliente: " + result.error);
             }
+          } catch (error) {
+            console.error(error);
+          }
         });
     </script>
-</body>
-
+  </body>
 </html>
