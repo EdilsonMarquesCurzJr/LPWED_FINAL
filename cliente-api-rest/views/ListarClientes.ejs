@@ -158,5 +158,24 @@
           window.location.href = "/listarClientes"; 
       }
   </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.querySelector("input[name='search']");
+      const tableRows = document.querySelectorAll("tbody tr");
+  
+      searchInput.addEventListener("input", function () {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+  
+        tableRows.forEach(row => {
+          const nameCell = row.querySelector("td:nth-child(2)");
+          if (nameCell) {
+            const nameText = nameCell.textContent.toLowerCase();
+            row.style.display = nameText.includes(searchTerm) ? "" : "none";
+          }
+        });
+      });
+    });
+  </script>
+  
   </body>
 </html>
