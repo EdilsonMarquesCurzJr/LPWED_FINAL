@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <style>
+      input {
+        width: 200px;
+        padding: 5px;
+        margin: 0px 0px 10px 0px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="display: flex; flex-direction: row; align-items: center; gap: 8%">
+      <h1>Editar Cliente</h1>
+      <a href="/listarClientes">
+        <button style="background-color: rgb(177, 0, 0)">Voltar</button>
+      </a>
+    </div>
+
+    <form action="/editar/<%= cliente.id %>" method="POST" id="form" data-id="<%= cliente.id %>">
+      <input type="hidden" name="_method" value="PUT"> 
+
+      <label for="nome">Nome:</label><br />
+      <input type="text" name="nome" id="nome" value="<%= cliente.nome %>" /><br />
+
+      <label for="dataNascimento">Data de Nascimento:</label><br />
+      <input type="date" name="dataNascimento" id="dataNascimento"
+      value="<%= cliente.nascimento ? new Date(cliente.nascimento).toISOString().split('T')[0] : '' %>"><br />
+
+      <label for="cpf">CPF:</label><br />
+      <input type="number" name="cpf" id="cpf" value="<%= cliente.cpf %>" /><br />
+
+      <label for="endereco">Endereço:</label><br />
+      <input type="text" name="endereco" id="endereco" value="<%= cliente.endereco %>" /><br />
+
+      <label for="telefone">Telefone:</label><br />
+      <input type="tel" name="telefone" id="telefone" value="<%= cliente.telefone %>" /><br />
+
+      <label for="email">Email:</label><br />
+      <input type="email" name="email" id="email" value="<%= cliente.email %>" /><br />
+
+      <input type="submit" id="confirmar" value="Salvar" />
+    </form>
+
+    <script>
+      document.getElementById("form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const id = document.getElementById("form").getAttribute("data-id");
+
+        const clienteAtualizado = {
+          nome: document.getElementById("nome").value,
+          nascimento: document.getElementById("dataNascimento").value,
+          cpf: document.getElementById("cpf").value,
+          endereco: document.getElementById("endereco").value,
+          telefone: document.getElementById("telefone").value,
+          email: document.getElementById("email").value,
+        };
+
+        console.log("Enviando atualização para o cliente ID:", id, clienteAtualizado);
+
+        try {
+          const response = await fetch(`http://localhost:3000/editar/${id}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(clienteAtualizado),
+          });
+
+          if (response.ok) {
+            alert("Cliente atualizado com sucesso!");
+            window.location.href = "/listarClientes";
+          } else {
+            const result = await response.json();
+            alert("Erro ao editar cliente: " + result.error);
+          }
+        } catch (error) {
+          console.error("Erro na requisição:", error);
+          alert("Erro ao editar cliente");
+        }
+      });
+    </script>
+  </body>
+</html>

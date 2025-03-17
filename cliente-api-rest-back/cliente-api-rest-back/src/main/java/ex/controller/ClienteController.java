@@ -64,6 +64,14 @@ public class ClienteController {
 	    return ResponseEntity.ok(clientesPage);
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
+	    return repository.findById(id)
+	        .map(cliente -> ResponseEntity.ok(cliente))
+	        .orElse(ResponseEntity.notFound().build());
+	}
+	
+	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
 		repository.deleteById(id);
