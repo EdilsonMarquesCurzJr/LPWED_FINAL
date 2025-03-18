@@ -1,9 +1,14 @@
 body {
     font-family: Arial, sans-serif;
     font-size: 18px;
-    margin: 20px;
-    padding: 20px;
+    margin: 0;
+    padding: 0;
     background-color: #f4f4f4;
+}
+
+main {
+    margin: 30px;
+    padding: 30px;
 }
 
 h1 {
@@ -66,17 +71,7 @@ button.editar:hover {
 }
 
 /* Estilos para o botão Excluir */
-button.excluir {
-    background-color: #FF0000; /* Vermelho */
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
-}
 
-button.excluir:hover {
-    background-color: #DC143C; /* Vermelho Escuro */
-}
 
 button.cadastrar {
     background-color: #4CAF50; /* Vermelho */
@@ -103,6 +98,18 @@ button.salvar {
     border: none;
     cursor: pointer;
     width: 110px;
+}
+
+button.excluir {
+    background-color: #FF0000; /* Vermelho */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+button.excluir:hover {
+    background-color: #DC143C; /* Vermelho Escuro */
 }
 
 form {
@@ -141,7 +148,7 @@ input[type="text"], input[type="email"], input[type="date"] {
 }
 
 #confirmar {
-    background-color: #FF0000; /* Vermelho */
+    background-color: #4CAF50; /* Vermelho */
     color: white;
     padding: 10px 20px;
     border: none;
@@ -163,7 +170,7 @@ input[type="text"], input[type="email"], input[type="date"] {
 }
 
 #confirmar:hover {
-    background-color: #DC143C; /* Vermelho Escuro */
+    background-color: #39863b; /* Vermelho Escuro */
 }
 
 #cancelar:hover {
@@ -198,3 +205,24 @@ input[type="text"], input[type="email"], input[type="date"] {
     background-color: #0056b3;
     font-weight: bold;
 }
+
+    footer {
+        text-align: center;
+        padding: 15px;
+        background-color: #333;
+        color: white;
+        font-size: 16px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+    
+    footer a {
+        color: #4CAF50;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }

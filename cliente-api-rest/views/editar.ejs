@@ -14,7 +14,7 @@
       }
     </style>
   </head>
-  <body>
+  <main><body>
     <div style="display: flex; flex-direction: row; align-items: center; gap: 8%">
       <h1>Editar Cliente</h1>
       <a href="/listarClientes">
@@ -42,16 +42,28 @@
 
       <label for="telefone">Telefone:</label><br />
       <!-- Formatação do Telefone -->
-      <input type="tel" name="telefone" id="telefone" value="<%= cliente.telefone %>" 
-        required maxlength="15" pattern="\d{5}-\d{4}" title="Formato: 94132-XXXX"/><br />
+      <input  type="tel" name="telefone" id="telefone" value="<%= cliente.telefone %>" 
+        required maxlength="15" pattern="\d{2}-\d{5}-\d{4}" title="Formato: XX-XXXXX-XXXX"/><br />
 
       <label for="email">Email:</label><br />
       <input type="email" name="email" id="email" value="<%= cliente.email %>" required/><br />
 
-      <input type="submit" id="confirmar" value="Salvar" />
+      <input type="submit" class="salvar" id="confirmar" value="Salvar" />
     </form>
+  </main>
+  
+
+    <footer>
+      <p>Desenvolvido por: 
+          <a href="https://github.com/edilsonmarques" target="_blank">Edilson Marques</a> e 
+          <a href="https://github.com/joaobrasil" target="_blank">João Brasil</a>.
+      </p>
+  </footer>
 
     <script>
+      const telefone = document.getElementById("telefone");
+      telefone.value = formatTelefone(telefone.value);
+
       // Função para formatar o CPF
       function formatCPF(cpf) {
         return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
@@ -59,7 +71,7 @@
 
       // Função para formatar o Telefone
       function formatTelefone(telefone) {
-        return telefone.replace(/^(\d{5})(\d{4})$/, "$1-$2");
+        return telefone.replace(/^(\d{2})(\d{5})(\d{4})$/, "$1-$2-$3");
       }
 
       // Evento para formatar o CPF enquanto o usuário digita
