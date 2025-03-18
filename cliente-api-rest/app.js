@@ -44,7 +44,7 @@ app.get('/listarClientes', async(req, res) => {
             params: { 
                 page, 
                 size,
-                nome: search
+                nome: search // Garanta que o nome do parâmetro está correto
             }
         });
         
@@ -56,11 +56,11 @@ app.get('/listarClientes', async(req, res) => {
             clientes: clientes || [],
             totalPages,
             currentPage,
-            searchTerm: search 
+            searchTerm: search
         });
 
     } catch(error) {
-        console.error(error);
+        console.error('Erro detalhado:', error.response?.data);
         res.status(500).send('Erro ao buscar clientes');
     }
 });

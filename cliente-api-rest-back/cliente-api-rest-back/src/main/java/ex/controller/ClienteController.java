@@ -55,12 +55,23 @@ public class ClienteController {
 	@GetMapping
 	public ResponseEntity<Page<ClienteFormRequest>> getLista(
 	    @RequestParam(defaultValue = "0") int page,
-	    @RequestParam(defaultValue = "4") int size) {
-	    
+	    @RequestParam(defaultValue = "4") int size,
+	    @RequestParam(required = false) String nome) {
+
 	    Pageable pageable = PageRequest.of(page, size);
-	    Page<ClienteFormRequest> clientesPage = repository.findAll(pageable)
-	        .map(ClienteFormRequest::fromModel);
-	        
+	    
+	    Page<ClienteFormRequest> clientesPage;
+	    
+	    if (nome != null && !nome.isEmpty()) {
+	        // Usa a busca filtrada
+	        clientesPage = repository.findByNomeContaining(nome, pageable)
+	            .map(ClienteFormRequest::fromModel);
+	    } else {
+	        // Busca geral
+	        clientesPage = repository.findAll(pageable)
+	            .map(ClienteFormRequest::fromModel);
+	    }
+	    
 	    return ResponseEntity.ok(clientesPage);
 	}
 	
